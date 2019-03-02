@@ -9,12 +9,13 @@ import {
 
 import ImgSwiper from "../../Components/ImgSwiper";
 
+const BUTTON_DISTANCE = -4;
 const Users = [
-  { id: "1", uri: require("../../Images/1.jpg") },
-  { id: "2", uri: require("../../Images/2.jpg") },
-  { id: "3", uri: require("../../Images/3.jpg") },
-  { id: "4", uri: require("../../Images/4.jpg") },
-  { id: "5", uri: require("../../Images/5.jpg") }
+  { id: "1", uri: require("../../Images/1.jpg"), name: "Amanda", age: 26 },
+  { id: "2", uri: require("../../Images/2.jpg"), name: "Jennifer", age: 27 },
+  { id: "3", uri: require("../../Images/3.jpg"), name: "Jessica", age: 34 },
+  { id: "4", uri: require("../../Images/4.jpg"), name: "Margot", age: 28 },
+  { id: "5", uri: require("../../Images/5.jpg"), name: "Natalie", age: 30 }
 ];
 
 class Swipe extends Component {
@@ -25,13 +26,17 @@ class Swipe extends Component {
           <ImgSwiper users={Users} />
         </View>
         <View style={styles.buttonContainer}>
-          <View style={{ ...styles.smallContainer, marginRight: -3 }}>
+          <View
+            style={{ ...styles.smallContainer, marginRight: BUTTON_DISTANCE }}
+          >
             <FontAwesome name="undo" size={25} color="#f6cd74" />
           </View>
-          <View style={{ ...styles.bigContainer, marginRight: -3 }}>
+          <View
+            style={{ ...styles.bigContainer, marginRight: BUTTON_DISTANCE }}
+          >
             <Feather name="x-circle" size={50} color="#f58875" />
           </View>
-          <View style={{ ...styles.bigContainer, marginLeft: -3 }}>
+          <View style={{ ...styles.bigContainer, marginLeft: BUTTON_DISTANCE }}>
             <Ionicons
               name="ios-heart"
               size={50}
@@ -39,7 +44,9 @@ class Swipe extends Component {
               color="#63de9b"
             />
           </View>
-          <View style={{ ...styles.smallContainer, marginLeft: -3 }}>
+          <View
+            style={{ ...styles.smallContainer, marginLeft: BUTTON_DISTANCE }}
+          >
             <MaterialIcons name="location-on" size={25} color="#278df9" />
           </View>
         </View>

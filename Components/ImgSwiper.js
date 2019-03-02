@@ -168,6 +168,14 @@ export default class ImgSwiper extends Component {
               </Animated.View>
 
               <Image style={styles.image} source={item.uri} />
+              <View>
+                <View>
+                  <Text>{item.name},</Text>
+                </View>
+                <View>
+                  <Text>{item.age}</Text>
+                </View>
+              </View>
             </Animated.View>
           );
         } else {
