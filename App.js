@@ -1,13 +1,13 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 
-import ImgSwiper from "./Modules/Components/ImgSwiper";
+import Swipe from "./Screens/Swipe/Swipe";
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <ImgSwiper />
+        <Swipe />
       </View>
     );
   }
@@ -15,6 +15,7 @@ export default class App extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    marginTop: 15
   }
 });
