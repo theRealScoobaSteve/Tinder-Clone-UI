@@ -8,9 +8,9 @@ import {
   Animated,
   PanResponder
 } from "react-native";
-import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import ImgBanner from "./ImgBanner";
+import DataCard from "./DataCard";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -136,22 +136,7 @@ export default class ImgSwiper extends Component {
             <Animated.View
               {...this.PanResponder.panHandlers}
               key={item.id}
-              style={[
-                this.rotateAndTranslate,
-                {
-                  height: SCREEN_HEIGHT * 0.6,
-                  // Offsets the margin set in Swipe.js
-                  width: SCREEN_WIDTH - 20,
-                  position: "absolute",
-                  borderWidth: 3,
-                  borderBottomColor: "white",
-                  borderColor: "#f1f1f1",
-                  borderRadius: 20,
-                  shadowOffset: { width: 10, height: 10 },
-                  shadowColor: "black",
-                  shadowOpacity: 1.0
-                }
-              ]}
+              style={[this.rotateAndTranslate, styles.cardWrapper]}
             >
               <ImgBanner
                 current
@@ -159,36 +144,7 @@ export default class ImgSwiper extends Component {
                 dislikeOpacity={this.dislikeOpacity}
               />
               <Image style={styles.image} source={item.uri} />
-              <View style={styles.dataSection}>
-                <View style={styles.leftCol}>
-                  <View>
-                    <Text style={{ color: "#808080", fontWeight: "800" }}>
-                      {item.name}
-                    </Text>
-                  </View>
-                  <View>
-                    <Text style={{ color: "#6a6a6a" }}>, {item.age}</Text>
-                  </View>
-                </View>
-                <View style={styles.rightCol}>
-                  <View style={{ marginTop: 3, marginRight: 5 }}>
-                    <FontAwesome name="group" size={15} color="#f58875" />
-                  </View>
-                  <View style={{ marginLeft: 5 }}>
-                    <Text style={{ color: "#f58875" }}>21</Text>
-                  </View>
-                  <View style={{ marginLeft: 5 }}>
-                    <MaterialCommunityIcons
-                      name="book-open-page-variant"
-                      size={16}
-                      color="#cecece"
-                    />
-                  </View>
-                  <View style={{ marginLeft: 5 }}>
-                    <Text style={{ color: "#cecece" }}>13</Text>
-                  </View>
-                </View>
-              </View>
+              <DataCard item={item} />
             </Animated.View>
           );
         } else {
@@ -199,45 +155,13 @@ export default class ImgSwiper extends Component {
                 {
                   opacity: this.nextCardOpacity,
                   transform: [{ scale: this.nextCardScale }],
-                  height: SCREEN_HEIGHT * 0.6,
-                  width: SCREEN_WIDTH,
-                  padding: 10,
-                  position: "absolute"
+                  ...styles.cardWrapper
                 }
               ]}
             >
               <ImgBanner />
               <Image style={styles.image} source={item.uri} />
-              <View style={styles.dataSection}>
-                <View style={styles.leftCol}>
-                  <View>
-                    <Text style={{ color: "#808080", fontWeight: "800" }}>
-                      {item.name}
-                    </Text>
-                  </View>
-                  <View>
-                    <Text style={{ color: "#6a6a6a" }}>, {item.age}</Text>
-                  </View>
-                </View>
-                <View style={styles.rightCol}>
-                  <View style={{ marginTop: 3, marginRight: 5 }}>
-                    <FontAwesome name="group" size={15} color="#f58875" />
-                  </View>
-                  <View style={{ marginLeft: 5 }}>
-                    <Text style={{ color: "#f58875" }}>21</Text>
-                  </View>
-                  <View style={{ marginLeft: 5 }}>
-                    <MaterialCommunityIcons
-                      name="book-open-page-variant"
-                      size={16}
-                      color="#cecece"
-                    />
-                  </View>
-                  <View style={{ marginLeft: 5 }}>
-                    <Text style={{ color: "#cecece" }}>13</Text>
-                  </View>
-                </View>
-              </View>
+              <DataCard item={item} />
             </Animated.View>
           );
         }
@@ -275,5 +199,18 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "flex-end"
+  },
+  cardWrapper: {
+    height: SCREEN_HEIGHT * 0.6,
+    // Offsets the margin set in Swipe.js
+    width: SCREEN_WIDTH - 20,
+    position: "absolute",
+    borderWidth: 3,
+    borderBottomColor: "white",
+    borderColor: "#f1f1f1",
+    borderRadius: 20,
+    shadowOffset: { width: 10, height: 10 },
+    shadowColor: "black",
+    shadowOpacity: 1.0
   }
 });
