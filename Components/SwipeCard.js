@@ -1,12 +1,5 @@
 import React, { Component } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Dimensions,
-  Image,
-  Animated
-} from "react-native";
+import { StyleSheet, Text, View, Image, Animated } from "react-native";
 
 class SwipeCard extends Component {
   render() {
@@ -36,14 +29,6 @@ class SwipeCard extends Component {
         </Animated.View>
 
         <Image style={styles.image} source={item.uri} />
-        <View>
-          <View>
-            <Text>{item.name},</Text>
-          </View>
-          <View>
-            <Text>{item.age}</Text>
-          </View>
-        </View>
       </View>
     );
   }
@@ -57,25 +42,24 @@ const styles = StyleSheet.create({
   },
   dislikeText: {
     borderWidth: 1,
-    borderColor: "red",
-    color: "red",
+    borderColor: "#f58875",
+    color: "#f58875",
     fontSize: 32,
     fontWeight: "800",
-    padding: 10
+    padding: 10,
+    borderRadius: 20
   },
   likeText: {
     borderWidth: 1,
-    borderColor: "green",
-    color: "green",
+    borderColor: "#33c67a",
+    color: "#33c67a",
     fontSize: 32,
     fontWeight: "800",
     padding: 10
   },
-  image: {
-    flex: 1,
-    height: null,
-    width: null,
-    resizeMode: "cover",
-    borderRadius: 20
+  banner: {
+    position: "absolute",
+    top: 50,
+    zIndex: 1000
   }
 });

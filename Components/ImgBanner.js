@@ -8,7 +8,7 @@ class ImgBanner extends Component {
         <View>
           <Animated.View
             style={{
-              opacity: this.likeOpacity,
+              opacity: this.props.likeOpacity,
               transform: [{ rotate: "-30deg" }],
               ...styles.banner,
               left: 40
@@ -19,7 +19,7 @@ class ImgBanner extends Component {
 
           <Animated.View
             style={{
-              opacity: this.dislikeOpacity,
+              opacity: this.props.dislikeOpacity,
               transform: [{ rotate: "30deg" }],
               ...styles.banner,
               right: 40
@@ -44,7 +44,7 @@ class ImgBanner extends Component {
     }
   };
   render() {
-    return <View style={styles.container} />;
+    return <View>{this.renderImage()}</View>;
   }
 }
 
@@ -56,18 +56,46 @@ const styles = StyleSheet.create({
   },
   dislikeText: {
     borderWidth: 1,
-    borderColor: "red",
-    color: "red",
+    borderColor: "#f58875",
+    color: "#f58875",
     fontSize: 32,
     fontWeight: "800",
-    padding: 10
+    padding: 10,
+    borderRadius: 20,
+    fontWeight: "800",
+    paddingLeft: 20,
+    paddingRight: 20,
+    borderRadius: 10
   },
   likeText: {
     borderWidth: 1,
-    borderColor: "green",
-    color: "green",
+    borderColor: "#33c67a",
+    color: "#33c67a",
     fontSize: 32,
     fontWeight: "800",
-    padding: 10
+    paddingLeft: 20,
+    paddingRight: 20,
+    borderRadius: 10
+  },
+  likeContainer: {
+    opacity: 0,
+    transform: [{ rotate: "-30deg" }],
+    position: "absolute",
+    top: 50,
+    left: 40,
+    zIndex: 1000
+  },
+  dislikeContainer: {
+    opacity: 0,
+    transform: [{ rotate: "30deg" }],
+    position: "absolute",
+    top: 50,
+    right: 40,
+    zIndex: 1000
+  },
+  banner: {
+    position: "absolute",
+    top: 50,
+    zIndex: 1000
   }
 });

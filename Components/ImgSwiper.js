@@ -8,6 +8,9 @@ import {
   Animated,
   PanResponder
 } from "react-native";
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
+
+import ImgBanner from "./ImgBanner";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -23,6 +26,23 @@ export default class ImgSwiper extends Component {
     this.state = {
       currentIndex: 0
     };
+
+    this.likeOpacity = this.position.x.interpolate({
+      // if the user is going towareds the like side,
+      // make it less opaque, otherswise make it opaque
+      inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
+      outputRange: [0, 0, 1],
+      extrapolate: "clamp"
+    });
+    // Logically associates an opacity to the dislike title in the corner
+    // of the image
+    this.dislikeOpacity = this.position.x.interpolate({
+      // if the user is going towareds the dislike side,
+      // make it less opaque, otherswise make it opaque
+      inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
+      outputRange: [1, 0, 0],
+      extrapolate: "clamp"
+    });
 
     // Rotates the screen based on the direction of the swipe
     this.rotate = this.position.x.interpolate({
@@ -47,25 +67,6 @@ export default class ImgSwiper extends Component {
       ]
     };
 
-    // Logically associates an opacity to the like title in the corner
-    // of the image
-    this.likeOpacity = this.position.x.interpolate({
-      // if the user is going towareds the like side,
-      // make it less opaque, otherswise make it opaque
-      inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
-      outputRange: [0, 0, 1],
-      extrapolate: "clamp"
-    });
-    // Logically associates an opacity to the dislike title in the corner
-    // of the image
-    this.dislikeOpacity = this.position.x.interpolate({
-      // if the user is going towareds the dislike side,
-      // make it less opaque, otherswise make it opaque
-      inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
-      outputRange: [1, 0, 0],
-      extrapolate: "clamp"
-    });
-
     this.nextCardOpacity = this.position.x.interpolate({
       inputRange: [-SCREEN_WIDTH / 2, 0, SCREEN_WIDTH / 2],
       outputRange: [1, 0, 1],
@@ -78,7 +79,7 @@ export default class ImgSwiper extends Component {
     });
     this.PanResponder = PanResponder.create({
       // Identify that on touch this responder should fire
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
+      onStartShouldSetPanResponder: () => true,
       // When the card is being moved fire this function
       onPanResponderMove: (evt, gestureState) => {
         // Moves the image based on wherever the the users finger is on the screen
@@ -139,41 +140,53 @@ export default class ImgSwiper extends Component {
                 this.rotateAndTranslate,
                 {
                   height: SCREEN_HEIGHT * 0.6,
-                  width: SCREEN_WIDTH,
-                  padding: 10,
-                  position: "absolute"
+                  // Offsets the margin set in Swipe.js
+                  width: SCREEN_WIDTH - 20,
+                  position: "absolute",
+                  borderWidth: 3,
+                  borderBottomColor: "white",
+                  borderColor: "#f1f1f1",
+                  borderRadius: 20,
+                  shadowOffset: { width: 10, height: 10 },
+                  shadowColor: "black",
+                  shadowOpacity: 1.0
                 }
               ]}
             >
-              <Animated.View
-                style={{
-                  opacity: this.likeOpacity,
-                  transform: [{ rotate: "-30deg" }],
-                  ...styles.banner,
-                  left: 40
-                }}
-              >
-                <Text style={styles.likeText}>LIKE</Text>
-              </Animated.View>
-
-              <Animated.View
-                style={{
-                  opacity: this.dislikeOpacity,
-                  transform: [{ rotate: "30deg" }],
-                  ...styles.banner,
-                  right: 40
-                }}
-              >
-                <Text style={styles.dislikeText}>NOPE</Text>
-              </Animated.View>
-
+              <ImgBanner
+                current
+                likeOpacity={this.likeOpacity}
+                dislikeOpacity={this.dislikeOpacity}
+              />
               <Image style={styles.image} source={item.uri} />
-              <View>
-                <View>
-                  <Text>{item.name},</Text>
+              <View style={styles.dataSection}>
+                <View style={styles.leftCol}>
+                  <View>
+                    <Text style={{ color: "#808080", fontWeight: "800" }}>
+                      {item.name}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={{ color: "#6a6a6a" }}>, {item.age}</Text>
+                  </View>
                 </View>
-                <View>
-                  <Text>{item.age}</Text>
+                <View style={styles.rightCol}>
+                  <View style={{ marginTop: 3, marginRight: 5 }}>
+                    <FontAwesome name="group" size={15} color="#f58875" />
+                  </View>
+                  <View style={{ marginLeft: 5 }}>
+                    <Text style={{ color: "#f58875" }}>21</Text>
+                  </View>
+                  <View style={{ marginLeft: 5 }}>
+                    <MaterialCommunityIcons
+                      name="book-open-page-variant"
+                      size={16}
+                      color="#cecece"
+                    />
+                  </View>
+                  <View style={{ marginLeft: 5 }}>
+                    <Text style={{ color: "#cecece" }}>13</Text>
+                  </View>
                 </View>
               </View>
             </Animated.View>
@@ -193,15 +206,38 @@ export default class ImgSwiper extends Component {
                 }
               ]}
             >
-              <Animated.View style={styles.likeContainer}>
-                <Text style={styles.likeText}>LIKE</Text>
-              </Animated.View>
-
-              <Animated.View style={styles.dislikeContainer}>
-                <Text style={styles.dislikeText}>NOPE</Text>
-              </Animated.View>
-
+              <ImgBanner />
               <Image style={styles.image} source={item.uri} />
+              <View style={styles.dataSection}>
+                <View style={styles.leftCol}>
+                  <View>
+                    <Text style={{ color: "#808080", fontWeight: "800" }}>
+                      {item.name}
+                    </Text>
+                  </View>
+                  <View>
+                    <Text style={{ color: "#6a6a6a" }}>, {item.age}</Text>
+                  </View>
+                </View>
+                <View style={styles.rightCol}>
+                  <View style={{ marginTop: 3, marginRight: 5 }}>
+                    <FontAwesome name="group" size={15} color="#f58875" />
+                  </View>
+                  <View style={{ marginLeft: 5 }}>
+                    <Text style={{ color: "#f58875" }}>21</Text>
+                  </View>
+                  <View style={{ marginLeft: 5 }}>
+                    <MaterialCommunityIcons
+                      name="book-open-page-variant"
+                      size={16}
+                      color="#cecece"
+                    />
+                  </View>
+                  <View style={{ marginLeft: 5 }}>
+                    <Text style={{ color: "#cecece" }}>13</Text>
+                  </View>
+                </View>
+              </View>
             </Animated.View>
           );
         }
@@ -215,48 +251,29 @@ export default class ImgSwiper extends Component {
 }
 
 const styles = StyleSheet.create({
-  dislikeText: {
-    borderWidth: 1,
-    borderColor: "red",
-    color: "red",
-    fontSize: 32,
-    fontWeight: "800",
-    padding: 10
-  },
-  likeText: {
-    borderWidth: 1,
-    borderColor: "green",
-    color: "green",
-    fontSize: 32,
-    fontWeight: "800",
-    padding: 10
-  },
-  likeContainer: {
-    opacity: 0,
-    transform: [{ rotate: "-30deg" }],
-    position: "absolute",
-    top: 50,
-    left: 40,
-    zIndex: 1000
-  },
-  dislikeContainer: {
-    opacity: 0,
-    transform: [{ rotate: "30deg" }],
-    position: "absolute",
-    top: 50,
-    right: 40,
-    zIndex: 1000
-  },
   image: {
     flex: 1,
     height: null,
     width: null,
     resizeMode: "cover",
-    borderRadius: 20
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20
   },
-  banner: {
-    position: "absolute",
-    top: 50,
-    zIndex: 1000
+  dataSection: {
+    flexDirection: "row",
+    padding: 10,
+    backgroundColor: "white",
+    borderBottomRightRadius: 20,
+    borderBottomLeftRadius: 20
+  },
+  leftCol: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "flex-start"
+  },
+  rightCol: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "flex-end"
   }
 });
