@@ -7,7 +7,7 @@ import {
   MaterialIcons
 } from "@expo/vector-icons";
 
-import ImgSwiper from "../../Components/ImgSwiper";
+import ImgSwiper from "./ImgSwiper";
 
 const BUTTON_DISTANCE = -4;
 const Users = [

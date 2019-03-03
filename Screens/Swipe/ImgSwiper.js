@@ -9,8 +9,7 @@ import {
   PanResponder
 } from "react-native";
 
-import ImgBanner from "./ImgBanner";
-import DataCard from "./DataCard";
+import DataCard from "../../Components/DataCard";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
@@ -138,13 +137,12 @@ export default class ImgSwiper extends Component {
               key={item.id}
               style={[this.rotateAndTranslate, styles.cardWrapper]}
             >
-              <ImgBanner
+              <DataCard
                 current
+                item={item}
                 likeOpacity={this.likeOpacity}
                 dislikeOpacity={this.dislikeOpacity}
               />
-              <Image style={styles.image} source={item.uri} />
-              <DataCard item={item} />
             </Animated.View>
           );
         } else {
@@ -159,9 +157,12 @@ export default class ImgSwiper extends Component {
                 }
               ]}
             >
-              <ImgBanner />
-              <Image style={styles.image} source={item.uri} />
-              <DataCard item={item} />
+              <DataCard
+                item={item}
+                likeOpacity={this.likeOpacity}
+                dislikeOpacity={this.dislikeOpacity}
+                current={false}
+              />
             </Animated.View>
           );
         }
@@ -175,31 +176,6 @@ export default class ImgSwiper extends Component {
 }
 
 const styles = StyleSheet.create({
-  image: {
-    flex: 1,
-    height: null,
-    width: null,
-    resizeMode: "cover",
-    borderTopRightRadius: 20,
-    borderTopLeftRadius: 20
-  },
-  dataSection: {
-    flexDirection: "row",
-    padding: 10,
-    backgroundColor: "white",
-    borderBottomRightRadius: 20,
-    borderBottomLeftRadius: 20
-  },
-  leftCol: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "flex-start"
-  },
-  rightCol: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "flex-end"
-  },
   cardWrapper: {
     height: SCREEN_HEIGHT * 0.6,
     // Offsets the margin set in Swipe.js
