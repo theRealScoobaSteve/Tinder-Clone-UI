@@ -126,48 +126,52 @@ export default class ImgSwiper extends Component {
   };
 
   renderUsers = () => {
-    return this.props.users
-      .map((item, i) => {
-        if (i < this.state.currentIndex) {
-          return null;
-        } else if (i === this.state.currentIndex) {
-          return (
-            <Animated.View
-              {...this.PanResponder.panHandlers}
-              key={item.id}
-              style={[this.rotateAndTranslate, styles.cardWrapper]}
-            >
-              <DataCard
-                current
-                item={item}
-                likeOpacity={this.likeOpacity}
-                dislikeOpacity={this.dislikeOpacity}
-              />
-            </Animated.View>
-          );
-        } else {
-          return (
-            <Animated.View
-              key={item.id}
-              style={[
-                {
-                  opacity: this.nextCardOpacity,
-                  transform: [{ scale: this.nextCardScale }],
-                  ...styles.cardWrapper
-                }
-              ]}
-            >
-              <DataCard
-                item={item}
-                likeOpacity={this.likeOpacity}
-                dislikeOpacity={this.dislikeOpacity}
-                current={false}
-              />
-            </Animated.View>
-          );
-        }
-      })
-      .reverse();
+    if (this.props.users && this.props.users.length > 1) {
+      return this.props.users
+        .map((item, i) => {
+          if (i < this.state.currentIndex) {
+            return null;
+          } else if (i === this.state.currentIndex) {
+            return (
+              <Animated.View
+                {...this.PanResponder.panHandlers}
+                key={item.id}
+                style={[this.rotateAndTranslate, styles.cardWrapper]}
+              >
+                <DataCard
+                  current
+                  item={item}
+                  likeOpacity={this.likeOpacity}
+                  dislikeOpacity={this.dislikeOpacity}
+                />
+              </Animated.View>
+            );
+          } else {
+            return (
+              <Animated.View
+                key={item.id}
+                style={[
+                  {
+                    opacity: this.nextCardOpacity,
+                    transform: [{ scale: this.nextCardScale }],
+                    ...styles.cardWrapper
+                  }
+                ]}
+              >
+                <DataCard
+                  item={item}
+                  likeOpacity={this.likeOpacity}
+                  dislikeOpacity={this.dislikeOpacity}
+                  current={false}
+                />
+              </Animated.View>
+            );
+          }
+        })
+        .reverse();
+    } else {
+      return null;
+    }
   };
 
   render() {
