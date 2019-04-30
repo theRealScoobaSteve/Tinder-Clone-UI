@@ -9,7 +9,11 @@ import {
 } from "react-navigation-redux-helpers";
 import { Provider, connect } from "react-redux";
 
-import SwipeReducer from "./Screens/Swipe/Reducer";
+import {
+  UsersReducer,
+  IndexReducer,
+  EventReducer
+} from "./Screens/Swipe/Reducer";
 
 import Swipe from "./Screens/Swipe/Swipe";
 
@@ -25,7 +29,9 @@ const AppNavigator = createStackNavigator(
 const navReducer = createNavigationReducer(AppNavigator);
 const appReducer = combineReducers({
   nav: navReducer,
-  users: SwipeReducer
+  users: UsersReducer,
+  index: IndexReducer,
+  event: EventReducer
 });
 
 // Note: createReactNavigationReduxMiddleware must be run before reduxifyNavigator

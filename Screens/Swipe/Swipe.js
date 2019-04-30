@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import {
   FontAwesome,
   Feather,
@@ -13,7 +13,7 @@ import ProfileButton from "../../Components/ProfileButton";
 import MessageButton from "../../Components/MessageButton";
 import Tinder from "../../Components/Tinder";
 
-import { fetchUsers } from "./Actions";
+import { likeImage, dislikeImage } from "./Actions";
 
 const BUTTON_DISTANCE = -4;
 
@@ -26,17 +26,12 @@ class Swipe extends Component {
     };
   };
 
-  componentDidMount() {
-    this.props.fetchUsers();
-    console.log("called");
-  }
-
   render() {
     if (this.props.users) {
       return (
         <View style={styles.container}>
           <View style={styles.imgCard}>
-            <ImgSwiper users={this.props.users} />
+            <ImgSwiper />
           </View>
           <View style={styles.buttonContainer}>
             <View
@@ -44,21 +39,26 @@ class Swipe extends Component {
             >
               <FontAwesome name="undo" size={25} color="#f6cd74" />
             </View>
-            <View
-              style={{ ...styles.bigContainer, marginRight: BUTTON_DISTANCE }}
-            >
-              <Feather name="x-circle" size={50} color="#f58875" />
-            </View>
-            <View
-              style={{ ...styles.bigContainer, marginLeft: BUTTON_DISTANCE }}
-            >
-              <Ionicons
-                name="ios-heart"
-                size={50}
-                style={{ paddingRight: 5, paddingLeft: 5 }}
-                color="#63de9b"
-              />
-            </View>
+            <TouchableOpacity onPress={this.props.dislikeImage}>
+              <View
+                style={{ ...styles.bigContainer, marginRight: BUTTON_DISTANCE }}
+              >
+                <Feather name="x-circle" size={50} color="#f58875" />
+              </View>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this.props.likeImage}>
+              <View
+                style={{ ...styles.bigContainer, marginLeft: BUTTON_DISTANCE }}
+              >
+                <Ionicons
+                  name="ios-heart"
+                  size={50}
+                  style={{ paddingRight: 5, paddingLeft: 5 }}
+                  color="#63de9b"
+                />
+              </View>
+            </TouchableOpacity>
+
             <View
               style={{ ...styles.smallContainer, marginLeft: BUTTON_DISTANCE }}
             >
@@ -81,7 +81,7 @@ function mapStateToProps({ users }) {
 
 export default connect(
   mapStateToProps,
-  { fetchUsers }
+  { likeImage, dislikeImage }
 )(Swipe);
 
 const styles = StyleSheet.create({

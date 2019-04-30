@@ -1,4 +1,11 @@
 export const FETCH_USERS = "FETCH_USERS";
+export const NEXT_IMAGE = "NEXT_IMAGE";
+export const LIKE_IMAGE = "LIKE_IMAGE";
+export const DISLIKE_IMAGE = "DISLIKE_IMAGE";
+export const RESET = "RESET";
+
+export const LIKED = "LIKED";
+export const DISLIKED = "DISLIKED";
 
 const Users = [
   {
@@ -37,5 +44,33 @@ export function fetchUsers() {
   return {
     type: FETCH_USERS,
     payload: Users
+  };
+}
+
+export function likeImage() {
+  return {
+    type: LIKE_IMAGE,
+    payload: LIKED
+  };
+}
+
+export function dislikeImage() {
+  return {
+    type: DISLIKE_IMAGE,
+    payload: DISLIKED
+  };
+}
+
+export function nextImage() {
+  return {
+    type: NEXT_IMAGE,
+    payload: null
+  };
+}
+
+export function resetEvent() {
+  return {
+    type: RESET,
+    payload: ""
   };
 }

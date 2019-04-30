@@ -1,30 +1,25 @@
 import React, { Component } from "react";
 import {
   StyleSheet,
-  Text,
   View,
   Dimensions,
-  Image,
   Animated,
   PanResponder
 } from "react-native";
+import { connect } from "react-redux";
 
 import DataCard from "../../Components/DataCard";
+import { fetchUsers, nextImage, resetEvent } from "./Actions";
 
 const SCREEN_HEIGHT = Dimensions.get("window").height;
 const SCREEN_WIDTH = Dimensions.get("window").width;
 
-export default class ImgSwiper extends Component {
+class ImgSwiper extends Component {
   constructor() {
     super();
 
     // Grabs the position the card is starting at
     this.position = new Animated.ValueXY();
-
-    // Current index of the index being swiped
-    this.state = {
-      currentIndex: 0
-    };
 
     this.likeOpacity = this.position.x.interpolate({
       // if the user is going towareds the like side,
@@ -105,6 +100,22 @@ export default class ImgSwiper extends Component {
     });
   }
 
+  componentDidMount() {
+    this.props.fetchUsers();
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.event === "LIKED") {
+      this.forceSwipe("right");
+      this.props.resetEvent();
+    }
+
+    if (this.props.event === "DISLIKED") {
+      this.forceSwipe("left");
+      this.props.resetEvent();
+    }
+  }
+
   forceSwipe = direction => {
     const x = direction === "right" ? SCREEN_WIDTH + 100 : -SCREEN_WIDTH - 100;
     Animated.spring(this.position, {
@@ -114,14 +125,8 @@ export default class ImgSwiper extends Component {
       // after the image is flicked off the screen bring the next image
       // into view
       .start(() => {
-        this.setState(
-          // next image
-          { currentIndex: this.state.currentIndex + 1 },
-          () => {
-            // back to center
-            this.position.setValue({ x: 0, y: 0 });
-          }
-        );
+        this.position.setValue({ x: 0, y: 0 });
+        this.props.nextImage();
       });
   };
 
@@ -129,9 +134,9 @@ export default class ImgSwiper extends Component {
     if (this.props.users && this.props.users.length > 1) {
       return this.props.users
         .map((item, i) => {
-          if (i < this.state.currentIndex) {
+          if (i < this.props.index) {
             return null;
-          } else if (i === this.state.currentIndex) {
+          } else if (i === this.props.index) {
             return (
               <Animated.View
                 {...this.PanResponder.panHandlers}
@@ -178,6 +183,19 @@ export default class ImgSwiper extends Component {
     return <View style={{ flex: 1 }}>{this.renderUsers()}</View>;
   }
 }
+
+function mapStateToProps({ users, index, event }) {
+  return {
+    users,
+    index,
+    event
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  { fetchUsers, nextImage, resetEvent }
+)(ImgSwiper);
 
 const styles = StyleSheet.create({
   cardWrapper: {
