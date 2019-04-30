@@ -104,16 +104,19 @@ class ImgSwiper extends Component {
     this.props.fetchUsers();
   }
 
-  componentDidUpdate(prevProps) {
+  componentDidUpdate() {
+    //after each successive update of redux, this component
+    //will check if the like of dislike button was pressed
+    //instead of a swipe
     if (this.props.event === "LIKED") {
       this.forceSwipe("right");
-      this.props.resetEvent();
     }
 
     if (this.props.event === "DISLIKED") {
       this.forceSwipe("left");
-      this.props.resetEvent();
     }
+
+    this.props.resetEvent();
   }
 
   forceSwipe = direction => {
@@ -125,7 +128,9 @@ class ImgSwiper extends Component {
       // after the image is flicked off the screen bring the next image
       // into view
       .start(() => {
+        //back to center
         this.position.setValue({ x: 0, y: 0 });
+        //advance image
         this.props.nextImage();
       });
   };
